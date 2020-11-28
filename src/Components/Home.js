@@ -19,7 +19,12 @@ function Home() {
     const request1 = await fetch(`https://pokeapi.co/api/v2/pokemon/${item.name}`)
     const response1 = await request1.json()
     /*response1.sprites.versions["generation-v"]["black-white"].animated.front_default*/
-    let data = {name: response1.name, sprite: response1.sprites.front_default}
+    let data = {
+      name: response1.name, 
+      sprite: response1.sprites.other["official-artwork"].front_default, 
+      spriteAnimated: response1.sprites.versions["generation-v"]["black-white"].animated.front_default,
+      type: [...response1.types]
+    }
     setDados((d) => [...d,data])
     setLoading(false);
   }
