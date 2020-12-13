@@ -4,41 +4,41 @@ import React from 'react';
 
 function Home() {
   const [dados,setDados] = React.useState([]);
-  const [pagina,setPagina] = React.useState(0);
-  const [loading, setLoading] = React.useState(false);
-
-  async function activePokemonLista(){
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${pagina}&limit=20`)
-    const request = await response.json()  
-    request.results.map((i,index) => {
-        setLoading(true)
-        return activePokemon(i)
-    })
-  }
-  async function activePokemon(item){
-    const request1 = await fetch(`https://pokeapi.co/api/v2/pokemon/${item.name}`)
-    const response1 = await request1.json()
-    /*response1.sprites.versions["generation-v"]["black-white"].animated.front_default*/
-    let data = {
-      name: response1.name, 
-      sprite: response1.sprites.other["official-artwork"].front_default, 
-      spriteAnimated: response1.sprites.versions["generation-v"]["black-white"].animated.front_default,
-      type: [...response1.types]
+  const [pagina,setPagina] = React.useState(20);
+  const [pokemon, setPokemon] = React.useState([])
+  const [loading, setLoading] = React.useState(false)
+  
+  async function activePokemon(){
+    setLoading(true)
+    for(let i = pagina - 20; i < pagina; i++){
+      console.log('teste: ' + i)
+      const request = await fetch(`https://pokeapi.co/api/v2/pokemon/${i + 1}`)
+      const json = await request.json()
+      let data = {
+        id: json.id,
+        name: json.name, 
+        sprite: json.sprites.other["official-artwork"].front_default, 
+        spriteAnimated: json.sprites.versions["generation-v"]["black-white"].animated.front_default,
+        type: [...json.types],
+      }
+      pokemon.push(data)
     }
-    setDados((d) => [...d,data])
-    setLoading(false);
+    Promise.all(pokemon).then(poke => {
+      setDados(poke)
+      setLoading(false)
+    })
   }
  
   React.useEffect(() => {
-    activePokemonLista();
+    activePokemon();
   },[pagina])
-  
+
   if(dados !== undefined){
   return (
-    <section>
-      <div>
+    <section className={style.pokemons}>
+      <div className="container">
         <ul className={style.ulPokemon}>
-          {dados.map((i, index) => <Pokemon key={i.name} item={i} index={index} />)}
+          {dados.map((i, index) => <Pokemon key={i.id} item={i} index={index} />)}
         </ul>
         {loading ? (
         <button className={style.buttonMore} disabled onClick={() => setPagina(pagina + 20)}>Carregando..</button>) : 
@@ -47,7 +47,6 @@ function Home() {
     </section>
   );
   }
-  
   else return null
 }
 
