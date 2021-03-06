@@ -47,6 +47,33 @@ li{
   margin: 0 auto;
 }
 
+.loading{
+  width: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 250px;
+}
+
+.loading div{
+  width: 50px;
+  height: 50px;
+  border: 6px solid rgb(215,215,215);
+  border-radius: 50%;
+  border-top: 6px solid rgb(185,185,185);
+  animation: loading 1s infinite ease-in-out;
+}
+
+@keyframes loading{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -88,7 +88,7 @@ function PokemonIndie() {
     pokemonSpecie()
   },[])
   
-  if(loading) return "Carregando.."
+  if(loading) return <div className="loading"><div></div></div>
   if(dados.stats === undefined) return null 
   if(dados !== undefined)
   return (
