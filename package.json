@@ -1,6 +1,6 @@
 {
-  "homepage": "https://martinspereira.github.io/Pokedex-React",
   "name": "pokedex",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
